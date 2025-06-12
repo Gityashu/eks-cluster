@@ -1,0 +1,40 @@
+# .github/workflows/terraform-destroy.yml
+name: Terraform AWS Destroy
+
+on:
+  workflow_dispatch:
+    # This allows you to run this workflow manually from the Actions tab.
+    # No inputs needed for a simple destroy trigger.
+
+jobs:
+  terraform_destroy:
+    runs-on: ubuntu-latest
+
+    env:
+      TF_VAR_aws_region: ${{ secrets.AWS_REGION }} # Pass AWS_REGION as a Terraform variable
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: latest # Or specify a version like '1.5.7' for consistency
+
+    - name: Initialize Terraform
+      run: terraform init
+      working-directory: terraform/ # Assumes your .tf files are in a 'terraform/' folder
+
+    - name: Destroy Terraform Resources
+      # This step will destroy all resources defined in your Terraform configuration.
+      # Use with extreme caution!
+      run: terraform destroy -auto-approve
+      working-directory: terraform/
