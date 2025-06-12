@@ -31,10 +31,10 @@ jobs:
 
     - name: Initialize Terraform
       run: terraform init
-      working-directory: terraform/ # Assumes your .tf files are in a 'terraform/' folder
+      working-directory: terraform_eks/ # Assumes your .tf files are in a 'terraform/' folder
 
     - name: Destroy Terraform Resources
       # This step will destroy all resources defined in your Terraform configuration.
       # Use with extreme caution!
       run: terraform destroy -auto-approve
-      working-directory: terraform/
+      working-directory: terraform_eks/
