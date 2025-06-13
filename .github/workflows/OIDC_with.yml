@@ -1,4 +1,4 @@
-name: Terraform EKS Workflow (OIDC)
+name: Terraform EKS Workflow with (OIDC) 
 
 on:
   workflow_dispatch:
