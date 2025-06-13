@@ -1,0 +1,65 @@
+name: Terraform AWS Apply 1
+
+on:
+  workflow_dispatch:
+    # This allows you to run this workflow manually from the Actions tab.
+    # No inputs needed for a simple apply trigger.
+
+jobs:
+  terraform_apply:
+    runs-on: ubuntu-latest
+
+    env:
+      TF_VAR_aws_region: ${{ secrets.AWS_REGION }} # Pass AWS_REGION as a Terraform variable
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }} # This sets AWS_REGION for the AWS CLI, etc.
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: latest # Or specify a version like '1.5.7' for consistency
+
+    - name: Initialize Terraform
+      run: terraform init
+      working-directory: terraform_eks/ # Assumes your .tf files are in a 'terraform/' folder
+
+    - name: Validate Terraform Configuration
+      run: terraform validate
+      working-directory: terraform_eks/
+
+    - name: Plan Terraform Changes
+      run: terraform plan -out=tfplan
+      working-directory: terraform_eks/
+
+    - name: Apply Terraform Changes
+      # This step only runs if the 'plan' was successful.
+      # Requires auto-approve as it's a non-interactive environment.
+      run: terraform apply -auto-approve tfplan
+      working-directory: terraform_eks/
+
+    # Setup Node.js for AWS SDK v3
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    # Install AWS SDK v3
+    - name: Install AWS SDK v3
+      run: npm install @aws-sdk/client-s3 @aws-sdk/lib-storage
+
+    # Optional: Add steps to store tfstate remotely (S3 for AWS) if not already configured in your .tf files
+    - name: Upload Terraform State (if not using remote backend)
+      uses: actions/upload-artifact@v4
+      with:
+        name: terraform-state
+        path: terraform/terraform.tfstate
+      if: always() # Always upload, even if previous steps fail 
