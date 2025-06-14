@@ -67,5 +67,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: terraform-state
-        path: terraform/terraform.tfstate
+        path: terraform_eks/terraform.tfstate
       if: always() # Always upload, even if previous steps fail
