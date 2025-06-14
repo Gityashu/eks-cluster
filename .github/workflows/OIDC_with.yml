@@ -19,6 +19,7 @@ on:
 env:
   AWS_REGION: us-east-1
   TF_VERSION: 1.7.0
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
 jobs:
   terraform:
@@ -39,7 +40,7 @@ jobs:
     - name: Configure AWS Credentials (OIDC)
       uses: aws-actions/configure-aws-credentials@v3
       with:
-        role-to-assume: arn:aws:iam::322657503534:role/aws_eks_oidc_connectivity
+        role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/aws_eks_oidc_connectivity
         aws-region: ${{ env.AWS_REGION }}
 
     - name: Terraform Init
