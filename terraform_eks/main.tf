@@ -58,6 +58,51 @@ resource "aws_route_table_association" "eks_public_rta" {
   subnet_id      = aws_subnet.eks_public_subnets[count.index].id
   route_table_id = aws_route_table.eks_public_rt.id
 }
+# -----------------------------------------------------------------------------
+# Security Group for EKS Cluster
+# -----------------------------------------------------------------------------
+resource "aws_security_group" "eks_sg" {
+  name        = "${var.cluster_name}-security-group"
+  description = "Security group for EKS cluster"
+  vpc_id      = aws_vpc.eks_vpc.id
+
+  # Allow SSH (port 22) - Admin access
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Change to your IP for security
+  }
+
+  # Allow Kubernetes API access (port 443)
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Restrict based on need
+  }
+
+  # Allow nodes to communicate (ports 10250, 10255)
+  ingress {
+    from_port   = 10250
+    to_port     = 10255
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow all outbound traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.cluster_name}-security-group"
+  }
+}
+
 
 # -----------------------------------------------------------------------------
 # EKS Cluster IAM Role
@@ -104,6 +149,7 @@ resource "aws_eks_cluster" "example_eks_cluster" {
 
   vpc_config {
     subnet_ids = [for s in aws_subnet.eks_public_subnets : s.id]
+    security_group_ids = [aws_security_group.eks_sg.id]
     # Optionally, enable public and/or private access to the API server endpoint
     endpoint_private_access = false
     endpoint_public_access  = true
