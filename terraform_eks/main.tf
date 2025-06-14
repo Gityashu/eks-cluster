@@ -158,7 +158,21 @@ resource "aws_iam_role_policy_attachment" "eks_nodegroup_policy_vpc_cni" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
   role       = aws_iam_role.eks_node_group_role.name
 }
+# -----------------------------------------------------------------------------
+# EKS Launch Template
+# -----------------------------------------------------------------------------
+resource "aws_launch_template" "eks_lt" {
+  name          = "${var.cluster_name}-launch-template"
+  key_name      = var.key_name
+  instance_type = var.instance_type
 
+  tag_specifications {
+    resource_type = "instance"
+    tags = {
+      Name = "${var.cluster_name}-eks-node"
+    }
+  }
+}
 # -----------------------------------------------------------------------------
 # EKS Managed Node Group
 # -----------------------------------------------------------------------------
@@ -168,6 +182,11 @@ resource "aws_eks_node_group" "example_node_group" {
   node_role_arn   = aws_iam_role.eks_node_group_role.arn
   subnet_ids      = [for s in aws_subnet.eks_public_subnets : s.id]
   instance_types  = [var.instance_type]
+  
+  launch_template {
+    id      = aws_launch_template.eks_lt.id
+    version = "$Latest"
+  }
 
   scaling_config {
     desired_size = var.desired_capacity

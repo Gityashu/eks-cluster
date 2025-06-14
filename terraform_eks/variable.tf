@@ -23,6 +23,11 @@ variable "instance_type" {
   type        = string
   default     = "t3.medium" # Consider t2.medium or t3.small for cheaper practice
 }
+variable "key_name" {
+  description = "The name of the SSH key pair to use for the EKS worker nodes."
+  type        = string
+  default     = "id_rsa" # Specify your key pair name if you want to SSH into the nodes
+}
 
 variable "desired_capacity" {
   description = "The desired number of worker nodes."
