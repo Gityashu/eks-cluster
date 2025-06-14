@@ -26,7 +26,7 @@ variable "instance_type" {
 variable "key_name" {
   description = "The name of the SSH key pair to use for the EKS worker nodes."
   type        = string
-  default     = "id_rsa" # Specify your key pair name if you want to SSH into the nodes
+  default     = "common-inv" # Specify your key pair name if you want to SSH into the nodes
 }
 
 variable "desired_capacity" {
