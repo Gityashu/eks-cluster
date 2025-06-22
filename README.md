@@ -1,12 +1,10 @@
 #           EKS-CLUSTER-SETUP
 
 **# Prerequisites**
-<pre><li>AWS Account with appropriate permissions.</li>
-
+<pre>
+<li>AWS Account with appropriate permissions.</li>
 <li>AWS CLI installed and configured (aws configure).</li>
-  
 <li>Terraform installed on your local machine.</li>
-
 <li>Basic knowledge of command-line usage.</li></pre>  
 
 **1. **Install Terraform****
