@@ -102,7 +102,6 @@ terraform apply
 </pre>
 <ul>
 <li>Review the plan output.</li>  
-<li>Type yes when prompted to proceed.</li>
 <li>Cluster creation may take 10–15 minutes.</li>
 </ul>  
 
