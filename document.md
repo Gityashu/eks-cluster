@@ -122,7 +122,8 @@ After creation, update your kubeconfig to connect to the cluster:
 <pre>
 bash
 
-aws eks --region <region> update-kubeconfig --name <cluster_name>
+ `aws eks --region &lt;region&gt; update-kubeconfig --name &lt;cluster_name&gt;`
+
 kubectl get nodes
 </pre>
 
