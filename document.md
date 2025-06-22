@@ -127,7 +127,7 @@ aws eks --region <region> update-kubeconfig --name <cluster_name>
 kubectl get nodes
 </pre>
 
-<li>Now you can manage your cluster using kubectl.</li>  
+<ul><li>Now you can manage your cluster using kubectl.</li></ul> 
 
 **10. Clean Up Resources** 
 
