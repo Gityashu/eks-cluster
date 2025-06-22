@@ -1,32 +1,34 @@
 #           EKS-CLUSTER-SETUP
 
-# Prerequisites
+**# Prerequisites**
+<pre><li>AWS Account with appropriate permissions.</li>
 
-AWS Account with appropriate permissions.
+<li>AWS CLI installed and configured (aws configure).</li>
+  
+<li>Terraform installed on your local machine.</li>
 
-AWS CLI installed and configured (aws configure).
-
-Terraform installed on your local machine.
-
-Basic knowledge of command-line usage.
+<li>Basic knowledge of command-line usage.</li></pre>  
 
 **1. **Install Terraform****
 
 Install Terraform on your system. For Ubuntu, you can use:
-
-bash
+<pre>
+  bash
 
 sudo snap install terraform --classic
+</pre>
 
 Or, use the official HashiCorp instructions for your OS:
 https://developer.hashicorp.com/terraform/install
 
-# 2. Prepare Your Working Directory
-Create a directory for your project and navigate into it:
+**2. **Prepare Your Working Directory****
 
+Create a directory for your project and navigate into it:
+<pre>
 bash
-mkdir eks-terraform-setup
-cd eks-terraform-setup
+mkdir terraform-eks
+cd terraform-eks
+</pre>  
 # 3. Clone a Terraform EKS Module Repository (Recommended)
 
 You can use a ready-made module to simplify the setup. For example:
