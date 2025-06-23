@@ -7,6 +7,34 @@
 <li>Terraform installed on your local machine.</li>
 <li>Basic knowledge of command-line usage.</li></pre>  
 
+# **Important: IAM Roles and Policies**
+
+<pre>{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:AttachRolePolicy",
+        "iam:PassRole",
+        "iam:PutRolePolicy",
+        "iam:GetRole",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedRolePolicies"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+</pre>
+
+1.**AmazonEKSClusterPolicy**              -Grants the cluster permission to manage compute resources.<br>
+2.**AmazonEC2ContainerRegistryReadOnly**  -Allows nodes to pull container images from ECR.<br>
+3.**AmazonEKS_CNI_Policy**                -Grants nodes permissions to manage Amazon VPC networking.<br>
+4.**AmazonEKSWorkerNodePolicy**           -Allows worker nodes to connect and register with the EKS cluster.<br>
+5.**AmazonSSMManagedInstanceCore**        -Enables EC2 nodes to use AWS Systems Manager features.<br>
+
 **1. **Install Terraform****
 
 Install Terraform on your system. For Ubuntu, you can use:
